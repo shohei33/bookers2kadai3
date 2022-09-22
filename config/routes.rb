@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root 'home#top'
 
-  get 'home/about' => 'home#index'
+  get 'home/about' => 'home#about'
 
 
 
