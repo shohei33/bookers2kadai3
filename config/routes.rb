@@ -10,18 +10,9 @@ Rails.application.routes.draw do
 
 
 
-  resources :users, only: [:show, :index, :new, :edit, :update] do
-    member do
-    get :following, :followers
-    end
-  end
+  resources :users, only: [:show, :index, :new, :edit, :update]
 
-
-
-  resources :books, only: [:index, :new, :create, :show, :edit, :destroy, :update] do
-  	resource :favorites, only: [:create, :destroy]
-  	resource :comments, only: [:create, :destroy]
-  end
+  resources :books, only: [:index, :new, :create, :show, :edit, :destroy, :update]
 
   resources :relationships, only: [:index, :create, :destroy]
 
