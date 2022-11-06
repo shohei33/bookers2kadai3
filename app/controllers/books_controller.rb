@@ -1,5 +1,7 @@
 class BooksController < ApplicationController
 
+before_action :authenticate_user!
+
   def create
     @book = Book.new(book_params)
     @book.user_id = current_user.id
@@ -9,7 +11,7 @@ class BooksController < ApplicationController
     else
       @user = User.find(current_user.id)
       flash[:errors] = @book.errors.full_messages
-      redirect_to books_path(@user)
+      redirect_to books_path(params[:id])
     end
   end
 
@@ -32,18 +34,20 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     if @book.user.id != current_user.id
       flash[:notice] = "You don't have the right to edit it"
-      redirect_to book_path(@book)
+      redirect_to books_path
     end
   end
 
   def update
-    book = Book.find(params[:id])
-    if book.update(book_params)
+    @book = Book.find(params[:id])
+    @book.user_id = current_user.id
+    if @book.update(book_params)
       flash[:notice] = "successfully"
-      redirect_to book_path(book)
+
+      redirect_to book_path(@book)
     else
-      flash[:errors] = book.errors.full_messages
-      redirect_to edit_book_path(book)
+      flash[:errors] = @book.errors.full_messages
+      render :edit
     end
   end
 
